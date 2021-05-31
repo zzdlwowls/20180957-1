@@ -1,4 +1,5 @@
 from flask import Flask , render_template, request
+from sign import idpw_ck
 from werkzeug.datastructures import RequestCacheControl
 app = Flask(__name__)
 
@@ -36,8 +37,23 @@ def soccer():
     </body>
     </html>
     '''
+@app.route('/signup',methods=['GET', 'POST'])
+def signup():
+    if  request.method == "GET":
+        return render_template('signup.html')
+    else:
+        name = request.form['username']
+        return '{} 는 당신의 이름입니다.'.format(name)
 
-
+@app.route('/login',methods=['GET', 'POST'])
+def login():
+    if  request.method == "GET":
+        return render_template('login.html')
+    else:
+        userID = request.form['userID']
+        userpw = request.form['userpw']
+        return idpw_ck(userID,userpw)
+        
 @app.route('/volley')
 def volley():
     return '배구페이지'
